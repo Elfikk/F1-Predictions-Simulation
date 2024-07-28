@@ -1,0 +1,10 @@
+/Books
+/Plots
+/PredictionSpreadsheets
+/__pycache__
+/ModelData
+/ProofOfConcept
+
+*.csv
+*.ipynb
+*.xlsx
