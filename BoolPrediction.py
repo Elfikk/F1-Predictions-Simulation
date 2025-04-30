@@ -5,7 +5,7 @@ from RaceHyperparams import RaceHyperparams
 class BoolPred():
 
     def __init__(self, cond_func, update_func) -> None:
-        
+
         # self.counts = {}
         self.grid = Grid()
 
@@ -18,14 +18,14 @@ class BoolPred():
         self.cond_func = cond_func
 
     def update(self, driver_results, team_results):
-        #Pass by reference in Python 
+        #Pass by reference in Python
         self.update_func(self.counts, driver_results, team_results)
 
         #Update boolean dictionary.
         self.bool = self.cond_func(self.counts)
 
     def __str__(self) -> str:
-        
+
         state = ""
         for name in self.counts:
             state = state + "{:>18} {} {} \n".format(name,
@@ -52,8 +52,8 @@ class BoolPred():
 # Couple of condition function generators
 
 def range_condition(min_val, max_val):
-    #Integer condition only, intended for counts.
-    #min val and max val are inclusive.
+    # Integer condition only, intended for counts.
+    # min val and max val are inclusive.
     range_vals = set(range(min_val, max_val + 1))
 
     def range_check(count_dict):
@@ -68,7 +68,7 @@ def range_condition(min_val, max_val):
     return range_check
 
 def geq_condition(min_val):
-    #Greater or equal to count condition.
+    # Greater or equal to count condition.
 
     def geq_check(count_dict):
         bool_dict = {}
@@ -148,8 +148,7 @@ def bool_pred_instances():
 
 if __name__ == "__main__":
 
-   
-    # Podiums = BoolPred(geq_condition(1), podium_update) 
+    # Podiums = BoolPred(geq_condition(1), podium_update)
     # print(Podiums)
 
     Podiums, Poles, FLs, Q1s, Monaco = bool_pred_instances()
@@ -167,6 +166,5 @@ if __name__ == "__main__":
 
     # for i in range(5):
     #     Q1s.update(driver_res, team_res)
-
 
     print(Monaco)

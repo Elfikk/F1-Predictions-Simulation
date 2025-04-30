@@ -29,8 +29,6 @@ class RaceWeekend():
                                                              driver.race_std))\
                              for driver in drivers], key=pos_sort_key)
 
-        # print(race_order)
-
         #3. Generate Driver DNFs
 
         self.dnfd_drivers = set()
@@ -41,7 +39,7 @@ class RaceWeekend():
             p_dnf = driver.p_dnf
             uniform_sample = np.random.random_sample()
             if uniform_sample < p_dnf:
-                
+
                 # DNFs can only happen until N - 2 laps (random sample does
                 # not include 1 and int always rounds down).
                 dnf_lap = int(np.random.random_sample() * (max_lap-1))
@@ -69,9 +67,6 @@ class RaceWeekend():
         for driver_name, laps in dnf_laps:
             self.laps_completed[driver_name] = laps
 
-        # for driver in self.race_order:
-        #     print(self.race_order[driver], driver, self.laps_completed[driver])
-
         # 6. Pick FL Recipient
         self.FL = "Someone"
         uniform_sample = np.random.random_sample()
@@ -81,11 +76,9 @@ class RaceWeekend():
         while running_p < uniform_sample and i < len(race_order) - 1:
             driver_name, info = race_order[i]
 
-            # print(driver_name)
             driver = grid.get_driver(driver_name)
             fl_prob = driver.p_fl
             running_p += fl_prob
-            # print(running_p)
 
             i += 1
 
@@ -96,7 +89,7 @@ class RaceWeekend():
 
         for driver_name, info in race_order:
             driver = grid.get_driver(driver_name)
-            ps_ave = driver.pit_stop_mu - 1
+            ps_ave = driver.pit_stop_mu
             ps_sample = 1 + np.random.poisson(ps_ave)
 
             if driver_name in self.dnfd_drivers:
@@ -116,10 +109,22 @@ class RaceWeekend():
                 driver_team = driver.team
                 team = grid.get_team(driver_team)
 
-                ps_mu = team.pit_time_mu
+                p = team.p_poor
 
-                p_min = min(np.random.exponential(ps_mu, self.pit_stop_counts[driver_name]))
-                self.min_stops[team.team] = min(p_min, self.min_stops[team.team])
+                good_stats = (team.pit_rate_mu, team.pit_rate_std)
+                bad_stats = (team.pit_rate_poor_mu, team.pit_rate_poor_std)
+
+                j = 0
+                max_rate = 0
+                while j < self.pit_stop_counts[driver_name]:
+                    ps_mu, ps_std = bad_stats if np.random.random() < p else good_stats
+                    new_rate = np.random.normal(ps_mu, ps_std)
+                    if 0 < new_rate < 5/8:
+                        max_rate = max(max_rate, new_rate)
+                        j += 1
+
+                p_min = 1 / max_rate
+                self.min_stops[team.team] = np.floor(100 * min(p_min, self.min_stops[team.team])) / 100
 
         # print(self.min_stops)
 
@@ -156,7 +161,7 @@ class RaceWeekend():
                       self.pit_stop_counts[driver_name], False, False,
                       self.laps_completed[driver_name]]
             self.driver_results[driver_name] = result
-        
+
         self.driver_results[self.FL][3] = True
 
         for driver_name in self.dnfd_drivers:
@@ -175,13 +180,12 @@ class RaceWeekend():
     def get_results(self):
         return self.driver_results, self.team_results
 
-
 if __name__ == "__main__":
 
     grid = Grid()
     race_hyperparams = RaceHyperparams()
 
-    race = RaceWeekend(14, grid, race_hyperparams)
+    race = RaceWeekend(20, grid, race_hyperparams)
 
     # print(race.quali_order)
     # print(race.race_order)

@@ -21,10 +21,10 @@ class RacePickPrediction():
     def __str__(self) -> str:
         state = ""
         for race_name in self.race_to_score:
-            state = state + "{:>15} {:>3} \n".format(race_name, 
+            state = state + "{:>15} {:>3} \n".format(race_name,
                                                      self.race_to_score[race_name])
         return state
-    
+
     def score(self, player_preds):
         score = 0
         for race in player_preds:

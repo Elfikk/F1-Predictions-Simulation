@@ -5,7 +5,7 @@ from scipy.stats import rankdata
 class RankedPrediction():
 
     def __init__(self, update_func, desc = True, driver_based = True) -> None:
-    
+
         self.mapper = F1ScoringMap()
         self.grid = Grid()
 
@@ -43,7 +43,7 @@ class RankedPrediction():
             state = state + "{:>5} {:>20} {:>5} \n".format(self.ranks[name],
                                                      name,
                                                     self.counts[name])
-                                                    
+
         return state
 
     def score(self, player_pred):
@@ -65,7 +65,7 @@ class ScorelessPrediction():
                        self.grid.get_driver_names()}
         self.ranks = {driver_name: 10.5 for driver_name in\
                        self.grid.get_driver_names()}
-        
+
     def update(self, driver_results, team_results):
 
         for driver in self.counts:
@@ -92,7 +92,7 @@ class ScorelessPrediction():
                                                      name,
                                                     self.scoring_counts[name])
         return state
-    
+
     def score(self, player_pred):
         player_rank = self.ranks[player_pred]
         score = self.mapper.map(player_rank)
@@ -166,12 +166,12 @@ def ranked_pred_instances():
     PositionImprover = RankedPrediction(pos_improv_update, False, True)
 
     ChampImprover = RankedPrediction(point_update, False, True)
-    
+
     grid = Grid()
     # print(grid.get_driver("Max Verstappen").points2023)
     ChampImprover.counts = {driver: -grid.get_driver(driver).points2023 for \
                             driver in ChampImprover.counts}
-    
+
     MaxPitStops = RankedPrediction(pit_count_update, False, True)
     SlowStarter = ScorelessPrediction()
 
@@ -184,7 +184,6 @@ def ranked_pred_instances():
 
     return [MaxDNFs, MinLaps, PositionImprover, ChampImprover, MaxPitStops, \
             SlowStarter, EngineComponents, FastestPitStop, QualiAverageTeam]
-
 
 if __name__ == "__main__":
 

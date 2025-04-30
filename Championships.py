@@ -8,7 +8,7 @@ from scipy.stats import spearmanr
 class DriverChampionship():
 
     def __init__(self) -> None:
-        
+
         grid = Grid()
         driver_names = grid.get_driver_names()
 
@@ -23,7 +23,7 @@ class DriverChampionship():
         score_map = F1ScoringMap()
 
         for driver_name in driver_results:
-            
+
             race_result = driver_results[driver_name]
             # print(driver_name, race_result)
             pos, fl = race_result[0], race_result[3]
@@ -88,7 +88,7 @@ class DriverChampionship():
                 print(driver_names)
 
             driver_names = sorted(driver_names, key = lambda x: self.raw_results[x])
-            
+
             if printPrint:
                 print(driver_names)
 
@@ -104,10 +104,10 @@ class DriverChampionship():
             order_string = order_string + driver_string
 
         return order_string
-    
+
     def get_champ_order(self):
         return self.champ_order
-    
+
     def score(self, player_preds):
         a, b = [i + 1 for i in range(len(self.champ_order))], []
 
@@ -124,7 +124,7 @@ class DriverChampionship():
 class ConstructorChampionship():
 
     def __init__(self) -> None:
-        
+
         grid = Grid()
 
         team_names = grid.get_team_names()
@@ -144,7 +144,7 @@ class ConstructorChampionship():
         score_map = F1ScoringMap()
 
         for driver_name in driver_results:
-            
+
             race_result = driver_results[driver_name]
             # print(driver_name, race_result)
             pos, fl = race_result[0], race_result[3]
@@ -162,7 +162,7 @@ class ConstructorChampionship():
 
             self.points[team_name] += pts
 
-        self.determine_champ_order()   
+        self.determine_champ_order()
 
         for i in range(len(self.champ_order)):
             name = self.champ_order[i]
@@ -214,7 +214,7 @@ class ConstructorChampionship():
                 print(driver_names)
 
             driver_names = sorted(driver_names, key = lambda x: self.raw_results[x])
-            
+
             if printPrint:
                 print(driver_names)
 
@@ -233,7 +233,7 @@ class ConstructorChampionship():
 
     def get_champ_order(self):
         return self.champ_order
-    
+
     def score(self, player_preds):
         a, b = [i + 1 for i in range(len(self.champ_order))], []
 
@@ -279,11 +279,11 @@ class NAfterN():
     def __str__(self):
         state = ""
         for driver_name in self.scores:
-            state = state + "{:>18} {} {} \n".format(driver_name, 
+            state = state + "{:>18} {} {} \n".format(driver_name,
                                                      self.running_order[driver_name][:6],
                                                      self.scores[driver_name][:6])
         return state
-    
+
     def score(self, player_preds):
         score = 0
         for round_num in player_preds:

@@ -53,12 +53,12 @@ class H2HPrediction():
         for team in self.team_to_drivers:
             name1, name2 = self.team_to_drivers[team]
             state = state + "{:>15} {:>18} {:>18} {:>2} {:>2} {} {} \n".format(
-                team, name1, name2, self.h2h[name1], self.h2h[name2], 
+                team, name1, name2, self.h2h[name1], self.h2h[name2],
                 self.scores[name1], self.scores[name2]
             )
 
         return state
-    
+
     def score(self, player_preds):
         # H2H Scoring
         # A correct pick of the driver ahead in the H2H is worth 5pts.

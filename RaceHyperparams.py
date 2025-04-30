@@ -4,7 +4,7 @@ class RaceHyperparams():
 
     def __init__(self, races_file = "ModelData/RaceMetadata.csv",
                  lapping_file = "ModelData/CriticalLap.csv") -> None:
-        
+
         # self.round_to_lap = {
         #     1: 57,
         #     2: 50,
@@ -12,7 +12,7 @@ class RaceHyperparams():
         #     4: 53,
         #     5: 56,
         #     6: 57,
-        #     7: 63, 
+        #     7: 63,
         #     8: 78,
         #     9: 70,
         #     10: 66,

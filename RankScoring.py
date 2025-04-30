@@ -1,7 +1,7 @@
 class F1ScoringMap():
     # Class for quick look up of points awarded in the top 10 of race.
     # Values with a half shift are used for tiebreakers of various predictions.
-    
+
     #Omg a singleton
     _instance = None
     def __new__(cls, *args, **kwargs):
@@ -10,14 +10,14 @@ class F1ScoringMap():
                                 cls, *args, **kwargs)
         return cls._instance
     def __init__(self) -> None:
-        
+
         self.pos_to_score = {
             1: 25,
             2: 18,
             3: 15,
             4: 12,
             5: 10,
-            6: 8, 
+            6: 8,
             7: 6,
             8: 4,
             9: 2,
@@ -34,7 +34,7 @@ class F1ScoringMap():
 
     def map(self, pos):
         return self.pos_to_score[pos]
-    
+
 if __name__ == "__main__":
 
     scoring_map = F1ScoringMap()

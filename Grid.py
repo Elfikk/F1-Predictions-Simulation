@@ -12,9 +12,9 @@ class Grid():
             cls._instance = super(Grid, cls).__new__(
                                 cls, *args, **kwargs)
         return cls._instance
-    
+
     def __init__(self) -> None:
-        
+
         self.drivers = []
         self.teams = []
 
@@ -33,14 +33,22 @@ class Grid():
         with open(team_data_file, "r") as file:
             for line in file:
                 if line[:4] != "Team":
-                    team_name, pt_ave, engine_components = line.split(",")
+                    team_name, engine_components, pt_ave, pt_std, pt_poor_ave, pt_poor_std, p_poor = line.split(",")
                     pt_ave = float(pt_ave)
+                    pt_std = float(pt_std)
+                    pt_poor_ave = float(pt_poor_ave)
+                    pt_poor_std = float(pt_poor_std)
+                    p_poor = float(p_poor)
                     engine_components = int(engine_components)
 
                     new_team = Team()
 
                     new_team.team = team_name
-                    new_team.pit_time_mu = pt_ave
+                    new_team.pit_rate_mu = pt_ave
+                    new_team.pit_rate_std = pt_std
+                    new_team.pit_rate_poor_mu = pt_poor_ave
+                    new_team.pit_rate_poor_std = pt_poor_std
+                    new_team.p_poor = p_poor
                     new_team.comp_mu = (engine_components - 8)/NUMBER_OF_RACES
 
                     self.teams.append(new_team)
@@ -56,9 +64,9 @@ class Grid():
         with open("ModelData/DriverData.csv", "r") as file:
             for line in file:
                 # print(line[:6])
-                if line[3:9] != "Driver":
+                if line[:6] != "Driver":
                     driver_name, team_name, fl_count, dnf_count, ps_count,\
-                        pts_23 = line.split(",") 
+                        pts_23 = line.split(",")
 
                     fl_count, dnf_count, ps_count, pts_23 = int(fl_count), \
                         int(dnf_count), int(ps_count), int(pts_23)
@@ -96,7 +104,7 @@ class Grid():
 
         #Generates Driver Quali Distributions
         driver_quali_positions = np.genfromtxt("ModelData/QualiPositions.csv", \
-                                              delimiter=",", skip_header=1, 
+                                              delimiter=",", skip_header=1,
                                               usecols=tuple(range(1, NUMBER_OF_RACES + 1)))
 
         for i in range(len(driver_quali_positions)):
@@ -109,7 +117,7 @@ class Grid():
 
     def get_team(self, team):
         return self.teams[self.team_to_index[team]]
-    
+
     def get_driver_names(self):
         return [self.drivers[i].name for i in range(len(self.drivers))]
 
@@ -119,6 +127,19 @@ class Grid():
 
     def get_team_names(self):
         return [self.teams[i].team for i in range(len(self.teams))]
+
+    def __str__(self):
+        # pass
+        #     return "{:>18} {:>12} {:>5.2f}±{:.2f} {:>5.2f}±{:.2f} {:.2f} {:.2f} {:.2f} {}".format(
+        #                                        self.name, self.team, \
+        #                                        self.quali_mu, self.quali_std,\
+        #                                        self.race_mu, self.race_std, \
+        #                                        self.p_dnf, self.p_fl, \
+        #                                        self.pit_stop_mu, self.points2023)
+
+        name = "Driver Name"
+        team = "Team"
+        quali_ave = "Quali μ±"
 
 if __name__ == "__main__":
 

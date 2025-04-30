@@ -2,7 +2,7 @@ class Driver():
     # Fancy schmancy class for holding driver details/parameters.
 
     def __init__(self) -> None:
-        
+
         #Driver Detail
         self.name = ""
         self.team = ""
@@ -19,7 +19,7 @@ class Driver():
         self.p_dnf = 0
         self.p_fl = 0
 
-        #Pit Stop Average
+        #Pit Stop Average above minimum
         self.pit_stop_mu = 0
 
         #Points in 2023
